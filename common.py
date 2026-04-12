@@ -1,3 +1,4 @@
+import os
 import re
 import time
 import unicodedata
@@ -8,8 +9,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 
-LINE_USER_ID = "U01a41d2bfd8d61e7b708b48aa5056738"
-LINE_CHANNEL_ACCESS_TOKEN = "H7jR4YDmRg5KF7sYDHByQ0FFMHd5YO/i0tuDfY7AcHXejpZQomTZ+9h0qE8Fghx6kXTwD9CnDx5T2U8EKoIxpBDFzef/eMIoIy//ZN4kSdtHtQS0KTPmcjN2CzkNLnnFcmGZaUSzd/zAjNsx3wdjLgdB04t89/1O/w1cDnyilFU="
+LINE_USER_ID = os.getenv("LINE_USER_ID", "")
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")
 
 DEFAULT_HEADERS = {
     "User-Agent": (
@@ -19,14 +20,16 @@ DEFAULT_HEADERS = {
     ),
     "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
     "Referer": "https://www.google.com/",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
 }
 
-CONNECT_TIMEOUT = 20
-READ_TIMEOUT = 40
+CONNECT_TIMEOUT = 35
+READ_TIMEOUT = 60
 REQUEST_TIMEOUT = (CONNECT_TIMEOUT, READ_TIMEOUT)
 
-RETRY_TOTAL = 3
-RETRY_BACKOFF = 2.0
+RETRY_TOTAL = 5
+RETRY_BACKOFF = 3.0
 
 
 def normalize_text(text):
@@ -104,7 +107,7 @@ def build_session():
         respect_retry_after_header=True,
     )
 
-    adapter = HTTPAdapter(max_retries=retry)
+    adapter = HTTPAdapter(max_retries=retry, pool_connections=10, pool_maxsize=10)
     session.mount("http://", adapter)
     session.mount("https://", adapter)
     session.headers.update(DEFAULT_HEADERS)
@@ -123,7 +126,12 @@ def fetch_response(url, headers=None, timeout=REQUEST_TIMEOUT):
 
     for attempt in range(1, RETRY_TOTAL + 2):
         try:
-            response = session.get(url, headers=request_headers, timeout=timeout)
+            response = session.get(
+                url,
+                headers=request_headers,
+                timeout=timeout,
+                allow_redirects=True,
+            )
             response.raise_for_status()
 
             if not response.encoding or response.encoding.lower() == "iso-8859-1":
