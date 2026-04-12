@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 
 from common import send_line_message
 from sites import carina
-from sites import churitos
 from sites import cmoon
 from sites import exe
 from sites import felicia
@@ -40,12 +39,6 @@ TARGETS = [
         "shop": "エグゼ",
         "url": "https://exe-mensspa.nagoya/profile.html?sid=32",
         "parser": exe,
-        "fallback_name": "",
-    },
-    {
-        "shop": "チュリトス",
-        "url": "https://churitos01.com/profile?lid=148",
-        "parser": churitos,
         "fallback_name": "",
     },
     {
