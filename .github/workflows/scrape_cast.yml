@@ -3,7 +3,7 @@ name: scrape_cast
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 3 * * 1"
+    - cron: "0 1 * * 1"
 
 jobs:
   run-scrape:
@@ -12,7 +12,6 @@ jobs:
     env:
       LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
       LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
