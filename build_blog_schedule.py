@@ -15,6 +15,17 @@ def parse_date_to_iso(text, default_year=None):
 
     value = value.replace("（", "(").replace("）", ")")
     value = re.sub(r"\s+", "", value)
+
+    match_with_time = re.search(r"(\d{1,2})[/-](\d{1,2})(?:\([月火水木金土日]\))?", value)
+    if match_with_time:
+        month = int(match_with_time.group(1))
+        day = int(match_with_time.group(2))
+        try:
+            dt = datetime(default_year, month, day)
+            return dt.strftime("%Y-%m-%d")
+        except ValueError:
+            return None
+
     value = re.sub(r"\([月火水木金土日]\)$", "", value)
 
     try:
@@ -128,6 +139,11 @@ def main():
             "store_name": "エグゼ",
             "therapist_name": "のあ",
             "shift_dates": "4/25,4/26",
+        },
+        {
+            "shop_name": "メンズエステWhite",
+            "cast_name": "こはく🔰",
+            "dates": ["04/27(月) 14:00～23:00", "04/28(火) 14:00～23:00"],
         },
         {
             "shop_name": "エグゼ",
