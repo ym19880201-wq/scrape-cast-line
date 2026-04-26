@@ -25,6 +25,7 @@ from sites import kuraimax
 from sites import resexy
 from sites import theratopia
 from sites import torihada
+from sites import white
 
 
 TIMEOUT = 20
@@ -178,6 +179,12 @@ TARGETS = [
         "parser": carina,
         "fallback_name": "",
     },
+    {
+        "shop": "メンズエステWhite",
+        "url": "https://esthe-nagoya.com/profile.html?2203",
+        "parser": white,
+        "fallback_name": "",
+    },
 ]
 
 
@@ -212,6 +219,10 @@ def ensure_shifts_list(value: Any) -> List[str]:
 
     if "、" in text:
         result = [normalize_text(x) for x in text.split("、") if normalize_text(x)]
+        return dedupe_keep_order(result)
+
+    if "," in text:
+        result = [normalize_text(x) for x in text.split(",") if normalize_text(x)]
         return dedupe_keep_order(result)
 
     return [text]
@@ -260,11 +271,16 @@ def normalize_parsed_result(
     fallback_name: str,
 ) -> Dict[str, Any]:
     if isinstance(parsed, dict):
+        shifts_value = parsed.get("shifts", None)
+
+        if shifts_value is None:
+            shifts_value = parsed.get("schedule", [])
+
         return {
             "shop": normalize_text(str(parsed.get("shop", "") or shop)),
             "url": normalize_text(str(parsed.get("url", "") or url)),
             "name": normalize_text(str(parsed.get("name", "") or fallback_name)),
-            "shifts": ensure_shifts_list(parsed.get("shifts", [])),
+            "shifts": ensure_shifts_list(shifts_value),
         }
 
     if isinstance(parsed, (list, tuple)):
@@ -289,11 +305,16 @@ def normalize_parsed_result(
         if len(items) == 1:
             only = items[0]
             if isinstance(only, dict):
+                shifts_value = only.get("shifts", None)
+
+                if shifts_value is None:
+                    shifts_value = only.get("schedule", [])
+
                 return {
                     "shop": normalize_text(str(only.get("shop", "") or shop)),
                     "url": normalize_text(str(only.get("url", "") or url)),
                     "name": normalize_text(str(only.get("name", "") or fallback_name)),
-                    "shifts": ensure_shifts_list(only.get("shifts", [])),
+                    "shifts": ensure_shifts_list(shifts_value),
                 }
             return {
                 "shop": normalize_text(shop),
