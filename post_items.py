@@ -77,6 +77,12 @@ POST_ITEMS = [
         "title": "２０代前半　F乳ドMセラピストと初回NS",
         "url": "https://wakust.com/hagetaka1234/1653062/",
     },
+    {
+        "shop_name": "メンズエステWhite",
+        "cast_name": "こはく🔰",
+        "title": "マイナー店舗の激美女　開始１０分で初回NS",
+        "url": "https://wakust.com/hagetaka1234/1691566/",
+    },
 ]
 
 
