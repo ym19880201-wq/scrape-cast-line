@@ -76,8 +76,7 @@ def normalize_date_list(value, default_year=None):
         if iso_date:
             result.append(iso_date)
 
-    result = sorted(set(result))
-    return result
+    return sorted(set(result))
 
 
 def pick_first(item, keys, default=""):
@@ -97,6 +96,7 @@ def build_blog_schedule(raw_items, default_year=None):
         shop_name = str(
             pick_first(raw_item, ["shop_name", "shop", "store_name", "store"], "")
         ).strip()
+
         cast_name = str(
             pick_first(raw_item, ["cast_name", "name", "therapist_name"], "")
         ).strip()
@@ -121,46 +121,3 @@ def build_blog_schedule(raw_items, default_year=None):
         )
 
     return schedule_items
-
-
-def main():
-    raw_items = [
-        {
-            "shop_name": "エグゼ",
-            "cast_name": "のあ",
-            "dates": ["04/15(水)", "04/16(木)"],
-        },
-        {
-            "shop": "エグゼ",
-            "name": "のあ",
-            "date_list": ["2026/04/23", "2026/04/24"],
-        },
-        {
-            "store_name": "エグゼ",
-            "therapist_name": "のあ",
-            "shift_dates": "4/25,4/26",
-        },
-        {
-            "shop_name": "メンズエステWhite",
-            "cast_name": "こはく🔰",
-            "dates": ["04/27(月) 14:00～23:00", "04/28(火) 14:00～23:00"],
-        },
-        {
-            "shop_name": "エグゼ",
-            "cast_name": "出勤なしの子",
-            "dates": [],
-        },
-    ]
-
-    schedule_items = build_blog_schedule(raw_items, default_year=2026)
-
-    print("====== ここから2通目用 schedule_items ======")
-    print()
-    for item in schedule_items:
-        print(item)
-    print()
-    print("====== ここまで ======")
-
-
-if __name__ == "__main__":
-    main()
