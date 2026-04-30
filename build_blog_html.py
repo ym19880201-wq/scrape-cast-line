@@ -19,42 +19,15 @@ def get_day_style(date_str):
     weekday = dt.weekday()
 
     styles = {
-        0: {
-            "border": "#bfe8ff",
-            "bg": "#f8fdff",
-            "header": "#dff4ff",
-        },
-        1: {
-            "border": "#f6cbfc",
-            "bg": "#fffafc",
-            "header": "#fdeefe",
-        },
-        2: {
-            "border": "#bff0df",
-            "bg": "#f8fffb",
-            "header": "#dcf9ef",
-        },
-        3: {
-            "border": "#ffe6a7",
-            "bg": "#fffef8",
-            "header": "#fff3c9",
-        },
-        4: {
-            "border": "#d8ccff",
-            "bg": "#fcfbff",
-            "header": "#ede8ff",
-        },
-        5: {
-            "border": "#ffd3a8",
-            "bg": "#fffaf7",
-            "header": "#ffe6d1",
-        },
-        6: {
-            "border": "#ffbcbc",
-            "bg": "#fff9f9",
-            "header": "#ffe0e0",
-        },
+        0: {"border": "#bfe8ff", "bg": "#ffffff", "header": "#dff4ff"},
+        1: {"border": "#f6cbfc", "bg": "#ffffff", "header": "#fdeefe"},
+        2: {"border": "#bff0df", "bg": "#ffffff", "header": "#dcf9ef"},
+        3: {"border": "#ffe6a7", "bg": "#ffffff", "header": "#fff3c9"},
+        4: {"border": "#d8ccff", "bg": "#ffffff", "header": "#ede8ff"},
+        5: {"border": "#ffd3a8", "bg": "#ffffff", "header": "#ffe6d1"},
+        6: {"border": "#ffbcbc", "bg": "#ffffff", "header": "#ffe0e0"},
     }
+
     return styles[weekday]
 
 
@@ -68,15 +41,84 @@ def escape_html(text):
     )
 
 
-def build_link_line(title, url, is_last):
-    safe_title = escape_html(title)
-    safe_url = escape_html(url)
+def detect_article_type(title):
+    text = str(title)
 
-    margin_style = "margin: 0;" if is_last else "margin: 0 0 8px 0;"
+    if "GHR" in text:
+        return "GHR"
+    if "NS" in text:
+        return "NS"
+    if "NN" in text:
+        return "NN"
+
+    return "OTHER"
+
+
+def get_article_priority(article_type):
+    priority = {
+        "GHR": 1,
+        "NS": 2,
+        "NN": 3,
+        "OTHER": 99,
+    }
+    return priority.get(article_type, 99)
+
+
+def build_type_tag(article_type):
+    if article_type == "GHR":
+        return (
+            '<span style="display:inline-block; width:34px; margin-right:8px; '
+            'text-align:center; color:#0066cc; background:#eaf4ff; '
+            'border:1px solid #9dccff; font-size:11px; font-weight:bold; '
+            'border-radius:3px;">GHR</span>'
+        )
+
+    if article_type == "NS":
+        return (
+            '<span style="display:inline-block; width:34px; margin-right:8px; '
+            'text-align:center; color:#9a7600; background:#fff7cc; '
+            'border:1px solid #ead36a; font-size:11px; font-weight:bold; '
+            'border-radius:3px;">NS</span>'
+        )
+
+    if article_type == "NN":
+        return (
+            '<span style="display:inline-block; width:34px; margin-right:8px; '
+            'text-align:center; color:#cc1f1f; background:#ffecec; '
+            'border:1px solid #f1a0a0; font-size:11px; font-weight:bold; '
+            'border-radius:3px;">NN</span>'
+        )
 
     return (
-        f'    <p style="{margin_style} font-size: 16px; line-height: 1.8;">\n'
-        f'      ・<a href="{safe_url}" style="text-decoration: none;">{safe_title}</a>\n'
+        '<span style="display:inline-block; width:34px; margin-right:8px; '
+        'text-align:center; color:#777; background:#f5f5f5; '
+        'border:1px solid #dddddd; font-size:11px; font-weight:bold; '
+        'border-radius:3px;">他</span>'
+    )
+
+
+def build_notice_html():
+    return (
+        '<p style="margin:0 0 18px 0; font-size:14px; line-height:1.8; color:#333;">'
+        '全て無課金での'
+        '<span style="font-size:14pt; font-weight:bold;">体験談</span>'
+        'です。'
+        '</p>'
+    )
+
+
+def build_link_line(title, url, article_type, is_last):
+    safe_title = escape_html(title)
+    safe_url = escape_html(url)
+    tag_html = build_type_tag(article_type)
+
+    border_style = "" if is_last else " border-bottom:1px solid #f1f1f1;"
+
+    return (
+        f'    <p style="margin:0; padding:9px 0; font-size:16px; '
+        f'line-height:1.8;{border_style}">\n'
+        f"      {tag_html}"
+        f'<a href="{safe_url}" style="text-decoration:none;">{safe_title}</a>\n'
         f"    </p>"
     )
 
@@ -85,32 +127,58 @@ def build_day_block(date_str, items):
     date_label = format_date_label(date_str)
     style = get_day_style(date_str)
 
+    sorted_items = sorted(
+        items,
+        key=lambda x: (
+            get_article_priority(x.get("article_type", "OTHER")),
+            x.get("title", ""),
+        ),
+    )
+
     lines = []
+
     lines.append(
-        f'<div style="margin: 0 0 18px 0; border: 2px solid {style["border"]}; '
-        f'border-radius: 8px; background-color: {style["bg"]}; overflow: hidden;">'
+        f'<div style="margin:0 0 18px 0; border:2px solid {style["border"]}; '
+        f'border-radius:8px; background-color:{style["bg"]}; overflow:hidden;">'
     )
+
     lines.append(
-        f'  <p style="margin: 0; padding: 10px 14px; font-size: 22px; font-weight: bold; '
-        f'color: #333; background-color: {style["header"]};">'
+        f'  <p style="margin:0; padding:10px 14px; font-size:22px; '
+        f'font-weight:bold; color:#333; background-color:{style["header"]};">'
     )
+
     lines.append(f"    {escape_html(date_label)}")
     lines.append("  </p>")
-    lines.append('  <div style="padding: 12px 14px;">')
+    lines.append('  <div style="padding:12px 14px; background:#ffffff;">')
 
-    for i, item in enumerate(items):
-        is_last = i == len(items) - 1
-        lines.append(build_link_line(item["title"], item["url"], is_last))
+    for i, item in enumerate(sorted_items):
+        is_last = i == len(sorted_items) - 1
+        lines.append(
+            build_link_line(
+                item["title"],
+                item["url"],
+                item.get("article_type", "OTHER"),
+                is_last,
+            )
+        )
 
     lines.append("  </div>")
     lines.append("</div>")
+
     return "\n".join(lines)
 
 
 def group_items_by_date(post_items):
     grouped = OrderedDict()
 
-    for item in sorted(post_items, key=lambda x: x["date"]):
+    for item in sorted(
+        post_items,
+        key=lambda x: (
+            x["date"],
+            get_article_priority(x.get("article_type", "OTHER")),
+            x.get("title", ""),
+        ),
+    ):
         date_str = item["date"]
         if date_str not in grouped:
             grouped[date_str] = []
@@ -129,7 +197,7 @@ def build_full_html(post_items):
     for date_str, items in grouped.items():
         blocks.append(build_day_block(date_str, items))
 
-    return "\n\n".join(blocks)
+    return '\n\n<div style="height:18px;"></div>\n\n'.join(blocks)
 
 
 def build_post_items_from_schedule(schedule_items, post_item_map):
@@ -147,13 +215,16 @@ def build_post_items_from_schedule(schedule_items, post_item_map):
             continue
 
         post_setting = post_item_map[key]
+        title = post_setting["title"]
+        article_type = detect_article_type(title)
 
         for date_str in date_list:
             result.append(
                 {
                     "date": date_str,
-                    "title": post_setting["title"],
+                    "title": title,
                     "url": post_setting["url"],
+                    "article_type": article_type,
                 }
             )
 
@@ -163,31 +234,9 @@ def build_post_items_from_schedule(schedule_items, post_item_map):
 def build_blog_html(schedule_items):
     post_item_map = get_post_item_map()
     post_items = build_post_items_from_schedule(schedule_items, post_item_map)
-    return build_full_html(post_items)
+    html = build_full_html(post_items)
 
+    if not html:
+        return ""
 
-def main():
-    schedule_items = [
-        {
-            "shop_name": "エグゼ",
-            "cast_name": "のあ",
-            "dates": ["2026-04-21", "2026-04-22"],
-        },
-    ]
-
-    html = build_blog_html(schedule_items)
-
-    print("====== ここから記事投稿サイトに貼るHTML ======")
-    print()
-
-    if html:
-        print(html)
-    else:
-        print("投稿対象データがありません。")
-
-    print()
-    print("====== ここまで ======")
-
-
-if __name__ == "__main__":
-    main()
+    return build_notice_html() + "\n\n" + html
