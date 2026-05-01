@@ -2,7 +2,7 @@ POST_ITEMS = [
     {
         "shop_name": "エグゼ",
         "cast_name": "のあ",
-        "title": "若め愛嬌MAXセラピ　グラインド腰使いがエロすぎる　初回GHR",
+        "title": "１０代愛嬌MAXセラピ　グラインド腰使いがエロすぎる　初回GHR",
         "url": "https://wakust.com/hagetaka1234/1221890/",
     },
     {
@@ -14,25 +14,25 @@ POST_ITEMS = [
     {
         "shop_name": "クライマックス東岡崎",
         "cast_name": "くるみ❤️オススメ度120%",
-        "title": "愛知郊外20代中盤セラピ　全身リップからの密着強め　初回NS",
+        "title": "愛知郊外20代中盤セラピ　全身リップのエロ施術　初回NS",
         "url": "https://wakust.com/hagetaka1234/1290191/",
     },
     {
         "shop_name": "トリハダスパ",
         "cast_name": "天音 かんな",
-        "title": "若めFカップセラピ　スタイル抜群で密着強め　初回NS",
+        "title": "若きFカップセラピ　スタイル抜群の神乳　初回NS",
         "url": "https://wakust.com/hagetaka1234/1298447/",
     },
     {
         "shop_name": "カリーナ",
         "cast_name": "愛莉（あいり）",
-        "title": "20代前半激カワセラピ　距離感近めで満足度高い　初回NN",
+        "title": "20代前半激カワセラピ　距離感近くてで満足度高い　初回NN",
         "url": "https://wakust.com/hagetaka1234/1367831/",
     },
     {
         "shop_name": "フェリシア",
         "cast_name": "桃瀬ゆいか",
-        "title": "20代前半低身長ロリ系セラピ　密着強めでギャップあり　初回NS",
+        "title": "20代前半低身長ロリ系セラピ　甘えた系いちゃいちゃ　初回NS",
         "url": "https://wakust.com/hagetaka1234/1397405/",
     },
     {
@@ -44,7 +44,7 @@ POST_ITEMS = [
     {
         "shop_name": "セラトピア",
         "cast_name": "ゆうか",
-        "title": "ドエロボディの20歳セラピ　密着好きで攻め感あり　初回GHR",
+        "title": "ドエロボディの20歳セラピ　エロ好きで攻めもすごい　初回GHR",
         "url": "https://wakust.com/hagetaka1234/1509522/",
     },
     {
@@ -70,6 +70,12 @@ POST_ITEMS = [
         "cast_name": "くるみ",
         "title": "21歳エロBODY　仰向けからは超密着　初回NS",
         "url": "https://wakust.com/hagetaka1234/1694665/",
+    },
+    {
+        "shop_name": "ベビードール",
+        "cast_name": "さら",
+        "title": "21歳激美女　体にオイルを自ら塗るどM女神　初回GHR",
+        "url": "https://wakust.com/hagetaka1234/1692098/",
     },
     {
         "shop_name": "C-MOON",
