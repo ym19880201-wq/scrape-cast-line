@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from common import send_line_message
 from build_blog_html import build_blog_html
 from build_blog_schedule import build_blog_schedule
+from sites import babydoll
 from sites import carina
 from sites import cmoon
 from sites import exe
@@ -141,6 +142,18 @@ TARGETS = [
         "shop": "ギャラクシー",
         "url": "https://galaxy-nagoya.com/cast/%E3%82%8C%E3%81%84",
         "parser": galaxy,
+        "fallback_name": "",
+    },
+    {
+        "shop": "ギャラクシー",
+        "url": "https://galaxy-nagoya.com/cast/%E3%81%8F%E3%82%8B%E3%81%BF",
+        "parser": galaxy,
+        "fallback_name": "",
+    },
+    {
+        "shop": "ベビードール",
+        "url": "https://babydoll-nagoya.com/profile/?id=18",
+        "parser": babydoll,
         "fallback_name": "",
     },
     {
