@@ -66,6 +66,12 @@ POST_ITEMS = [
         "url": "https://wakust.com/hagetaka1234/1492639/",
     },
     {
+        "shop_name": "ギャラクシー",
+        "cast_name": "くるみ",
+        "title": "21歳エロBODY　仰向けからは超密着　初回NS",
+        "url": "https://wakust.com/hagetaka1234/1694665/",
+    },
+    {
         "shop_name": "C-MOON",
         "cast_name": "やみ",
         "title": "小松菜奈似セラピ　マイナー店でのまさかの展開　初回GHR",
