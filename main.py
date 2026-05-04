@@ -163,6 +163,12 @@ TARGETS = [
         "fallback_name": "",
     },
     {
+        "shop": "セラトピア",
+        "url": "https://esthe-theratopia.net/profile.html?sid=195",
+        "parser": theratopia,
+        "fallback_name": "",
+    },
+    {
         "shop": "トリハダスパ",
         "url": "https://torihada-spa.men-es.jp/profile.html?sid=305",
         "parser": torihada,
