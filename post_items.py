@@ -2,13 +2,13 @@ POST_ITEMS = [
     {
         "shop_name": "エグゼ",
         "cast_name": "のあ",
-        "title": "１０代愛嬌MAXセラピ　グラインド腰使いがエロすぎる　初回GHR",
+        "title": "２０歳愛嬌MAXセラピ　グラインド腰使いがエロすぎる　初回GHR",
         "url": "https://wakust.com/hagetaka1234/1221890/",
     },
     {
         "shop_name": "ほしふるスパ",
         "cast_name": "あやの",
-        "title": "マイナー店の20歳セラピ　想像以上にレベル高い　初回無課金GHR",
+        "title": "マイナー店の20歳セラピ　ドエロBODYと２回戦　初回無課金GHR",
         "url": "https://wakust.com/hagetaka1234/1310303/",
     },
     {
@@ -26,13 +26,13 @@ POST_ITEMS = [
     {
         "shop_name": "カリーナ",
         "cast_name": "愛莉（あいり）",
-        "title": "20代前半激カワセラピ　距離感近くてで満足度高い　初回NN",
+        "title": "20代前半激カワセラピ　「いっぱい出して」の神演出　初回NN",
         "url": "https://wakust.com/hagetaka1234/1367831/",
     },
     {
         "shop_name": "フェリシア",
         "cast_name": "桃瀬ゆいか",
-        "title": "20代前半低身長ロリ系セラピ　甘えた系いちゃいちゃ　初回NS",
+        "title": "20代前半低身長ロリ系セラピ　甘えん坊の初回いちゃいちゃ　初回NS",
         "url": "https://wakust.com/hagetaka1234/1397405/",
     },
     {
@@ -56,19 +56,19 @@ POST_ITEMS = [
     {
         "shop_name": "ギャラクシー",
         "cast_name": "ゆり",
-        "title": "ハーフ美人F乳セラピ　スタイル抜群で満足度高め　初回NS",
+        "title": "ハーフ美人F乳セラピ　スタイル抜群の神乳　初回NS",
         "url": "https://wakust.com/hagetaka1234/1611837/",
     },
     {
         "shop_name": "ギャラクシー",
         "cast_name": "れい",
-        "title": "20代後半褐色ギャル　どM気質で攻め感しっかり　初回NN",
+        "title": "20代後半褐色ギャル　どMでさらにNNOK！　初回NN",
         "url": "https://wakust.com/hagetaka1234/1492639/",
     },
     {
         "shop_name": "ギャラクシー",
         "cast_name": "くるみ",
-        "title": "21歳エロBODY　仰向けからは超密着　初回NS",
+        "title": "21歳エロBODY　仰向けからは超密着からのいちゃいちゃ　初回NS",
         "url": "https://wakust.com/hagetaka1234/1694665/",
     },
     {
@@ -86,14 +86,28 @@ POST_ITEMS = [
     {
         "shop_name": "リゼクシー",
         "cast_name": "白空 ぽえむ",
-        "title": "20代前半F乳ドMセラピ　可愛い顔してどM　初回NS",
+        "title": "20代前半F乳ドMセラピ　美乳持ちのどM　初回NS",
         "url": "https://wakust.com/hagetaka1234/1653062/",
     },
     {
         "shop_name": "メンズエステWhite",
         "cast_name": "こはく🔰",
-        "title": "マイナー店の激美女セラピ　開始10分で距離近い！？　初回NS",
+        "title": "マイナー店の激美女セラピ　開始１０分でエロスタートの痴女　初回NS",
         "url": "https://wakust.com/hagetaka1234/1691566/",
+    },
+
+    # 追加
+    {
+        "shop_name": "セラトピア",
+        "cast_name": "🔰ひめか新人🔰",
+        "title": "２２歳Dカップセラピスト　どM激カワギャルといちゃいちゃ初回NS",
+        "url": "https://wakust.com/hagetaka1234/1698312/",
+    },
+    {
+        "shop_name": "ゴールデンローズ",
+        "cast_name": "さらん",
+        "title": "２０歳神乳Gカップ神乳セラピスト　半端ない重量感の神乳　初回GHR",
+        "url": "https://wakust.com/hagetaka1234/1541555/",
     },
 ]
 
