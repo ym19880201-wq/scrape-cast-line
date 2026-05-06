@@ -20,6 +20,7 @@ from sites import cmoon
 from sites import exe
 from sites import felicia
 from sites import galaxy
+from sites import golden_rose
 from sites import haniel
 from sites import hosifuluspa
 from sites import kuraimax
@@ -202,6 +203,12 @@ TARGETS = [
         "shop": "メンズエステWhite",
         "url": "https://esthe-nagoya.com/profile.html?2203",
         "parser": white,
+        "fallback_name": "",
+    },
+    {
+        "shop": "ゴールデンローズ",
+        "url": "https://golden-rose.jp/therapist.php?id=728",
+        "parser": golden_rose,
         "fallback_name": "",
     },
 ]
