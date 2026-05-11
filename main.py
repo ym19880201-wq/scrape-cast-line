@@ -394,7 +394,6 @@ def build_blog_title_html() -> str:
         '<div style="text-align:center; font-weight:bold; '
         'line-height:1.45; margin:0 0 18px 0; padding:12px 10px; '
         'display:block; width:100%; max-width:100%; box-sizing:border-box; '
-        'overflow-wrap:break-word; word-break:normal; '
         f'background:{pattern["background"]}; '
         f'border-top:4px solid {pattern["border"]}; '
         f'border-bottom:4px solid {pattern["border"]}; '
@@ -402,8 +401,10 @@ def build_blog_title_html() -> str:
         f'color:{pattern["text"]}; '
         f'box-shadow:{pattern["inset"]}; '
         f'text-shadow:{pattern["shadow"]};">'
+        '<div style="display:inline-block; text-align:center;">'
         f'<div style="font-size:18px; line-height:1.45;">{title_parts["date_range"]}</div>'
-        f'<div style="font-size:24px; line-height:1.35; margin-top:2px; padding-left:5em; box-sizing:border-box;">{title_parts["label"]}</div>'
+        f'<div style="font-size:24px; line-height:1.35; margin-top:2px;">{title_parts["label"]}</div>'
+        "</div>"
         "</div>"
     )
 
