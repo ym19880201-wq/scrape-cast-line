@@ -359,15 +359,23 @@ def normalize_parsed_result(
     }
 
 
-def build_weekly_blog_title() -> str:
+def build_weekly_blog_title_parts() -> Dict[str, str]:
     today_jst = datetime.now(JST).date()
     monday = today_jst - timedelta(days=today_jst.weekday())
     sunday = monday + timedelta(days=6)
 
-    start_text = f"{monday.month}/{monday.day}({WEEKDAY_JA[monday.weekday()]})"
-    end_text = f"{sunday.month}/{sunday.day}({WEEKDAY_JA[sunday.weekday()]})"
+    start_text = f"{monday.month}月{monday.day}日（{WEEKDAY_JA[monday.weekday()]}）"
+    end_text = f"{sunday.month}月{sunday.day}日（{WEEKDAY_JA[sunday.weekday()]}）"
 
-    return f"【{start_text}～{end_text} HRセラピ出勤予定】"
+    return {
+        "date_range": f"{start_text}～{end_text}",
+        "label": "HR出勤予定表",
+    }
+
+
+def build_weekly_blog_title() -> str:
+    title_parts = build_weekly_blog_title_parts()
+    return f'{title_parts["date_range"]} {title_parts["label"]}'
 
 
 def build_weekly_blog_subject() -> str:
@@ -379,27 +387,23 @@ def choose_title_color_pattern() -> Dict[str, str]:
 
 
 def build_blog_title_html() -> str:
-    title = build_weekly_blog_title()
+    title_parts = build_weekly_blog_title_parts()
     pattern = choose_title_color_pattern()
 
-    inner_title = title
-    if title.startswith("【") and title.endswith("】"):
-        inner_title = title[1:-1]
-
     return (
-        '<div style="text-align:center; font-size:22px; font-weight:bold; '
-        'line-height:1.4; margin:0 0 18px 0; padding:12px 8px; '
+        '<div style="text-align:center; font-weight:bold; '
+        'line-height:1.45; margin:0 0 18px 0; padding:12px 10px; '
+        'display:block; width:100%; max-width:100%; box-sizing:border-box; '
+        'overflow-wrap:break-word; word-break:normal; '
         f'background:{pattern["background"]}; '
         f'border-top:4px solid {pattern["border"]}; '
         f'border-bottom:4px solid {pattern["border"]}; '
         'border-radius:9px; '
         f'color:{pattern["text"]}; '
         f'box-shadow:{pattern["inset"]}; '
-        f'text-shadow:{pattern["shadow"]}; '
-        'white-space:nowrap;">'
-        f'<span style="font-size:26px; color:{pattern["bracket"]};">【</span>'
-        f"{inner_title}"
-        f'<span style="font-size:26px; color:{pattern["bracket"]};">】</span>'
+        f'text-shadow:{pattern["shadow"]};">'
+        f'<div style="font-size:18px; line-height:1.45;">{title_parts["date_range"]}</div>'
+        f'<div style="font-size:24px; line-height:1.35; margin-top:2px; padding-left:5em; box-sizing:border-box;">{title_parts["label"]}</div>'
         "</div>"
     )
 
