@@ -3,7 +3,7 @@ name: scrape_cast
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 1 * * 1"
+    - cron: "17 21 * * 0"
 
 jobs:
   run-scrape:
