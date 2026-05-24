@@ -16,6 +16,7 @@ from build_blog_html import build_blog_html
 from build_blog_schedule import build_blog_schedule
 from sites import babydoll
 from sites import carina
+from sites import century
 from sites import cmoon
 from sites import exe
 from sites import felicia
@@ -209,6 +210,12 @@ TARGETS = [
         "shop": "ゴールデンローズ",
         "url": "https://golden-rose.jp/therapist.php?id=728",
         "parser": golden_rose,
+        "fallback_name": "",
+    },
+    {
+        "shop": "センチュリー",
+        "url": "https://century-nagoya.com/profile.php?sid=987",
+        "parser": century,
         "fallback_name": "",
     },
 ]
