@@ -119,7 +119,7 @@ def extract_schedule(lines):
                 j += 1
 
             if end_time:
-                schedule_results.append(f"{date_text} {start_time}～{end_time}")
+                schedule_results.append(date_text)
                 i = j + 1
                 continue
 
