@@ -8,7 +8,7 @@ POST_ITEMS = [
     {
         "shop_name": "ほしふるスパ",
         "cast_name": "あやの",
-        "title": "マイナー店の20歳セラピ　ドエロBODYと２回戦　初回無課金GHR",
+        "title": "マイナー店の20歳セラピ　ドエロBODYと２回戦　初回GHR",
         "url": "https://wakust.com/hagetaka1234/1310303/",
     },
     {
@@ -112,7 +112,7 @@ POST_ITEMS = [
     {
         "shop_name": "センチュリー",
         "cast_name": "園田まお",
-        "title": "２０代前半セラピ　　自分でいじりはじめるエロがリスト",
+        "title": "２０代前半セラピ　　自分でいじりはじめるエロがリスト 初回GHR",
         "url": "https://wakust.com/hagetaka1234/1715859/",
     },
 ]
