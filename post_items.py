@@ -109,6 +109,12 @@ POST_ITEMS = [
         "title": "２０歳神乳Gカップ神乳セラピスト　半端ない重量感の神乳　初回GHR",
         "url": "https://wakust.com/hagetaka1234/1541555/",
     },
+    {
+        "shop_name": "センチュリー",
+        "cast_name": "園田まお",
+        "title": "２０代前半セラピ　　自分でいじりはじめるエロがリスト",
+        "url": "https://wakust.com/hagetaka1234/1715859/",
+    },
 ]
 
 
