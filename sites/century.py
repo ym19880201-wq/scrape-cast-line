@@ -73,7 +73,7 @@ def parse(url):
 
                 if time_text and time_text != "-":
                     date_text = date_text.replace("[", "(").replace("]", ")")
-                    shifts.append(f"{date_text} {time_text}")
+                    shifts.append(date_text)
 
     if not cast_name:
         cast_name = "名前取得失敗"
