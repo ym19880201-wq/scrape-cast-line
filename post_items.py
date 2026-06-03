@@ -6,6 +6,12 @@ POST_ITEMS = [
         "url": "https://wakust.com/hagetaka1234/1221890/",
     },
     {
+        "shop_name": "エグゼ",
+        "cast_name": "七海さやか",
+        "title": "20代前半超激カワセラピスト　恥じらい方も完璧。四つん這いからの初回GHR",
+        "url": "https://wakust.com/hagetaka1234/1731529/",
+    },
+    {
         "shop_name": "ほしふるスパ",
         "cast_name": "あやの",
         "title": "マイナー店の20歳セラピ　ドエロBODYと２回戦　初回GHR",
