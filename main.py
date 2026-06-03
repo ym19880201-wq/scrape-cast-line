@@ -111,9 +111,9 @@ TARGETS = [
         "fallback_name": "",
     },
     {
-        "shop": "クライマックス東岡崎",
-        "url": "https://kuraimaxmax.com/profile.php?sid=399",
-        "parser": kuraimax,
+        "shop": "エグゼ",
+        "url": "https://exe-mensspa.nagoya/profile.html?sid=152",
+        "parser": exe,
         "fallback_name": "",
     },
     {
