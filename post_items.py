@@ -36,18 +36,6 @@ POST_ITEMS = [
         "url": "https://wakust.com/hagetaka1234/1367831/",
     },
     {
-        "shop_name": "フェリシア",
-        "cast_name": "桃瀬ゆいか",
-        "title": "20代前半低身長ロリ系セラピ　甘えん坊の初回いちゃいちゃ　初回NS",
-        "url": "https://wakust.com/hagetaka1234/1397405/",
-    },
-    {
-        "shop_name": "ハニエル",
-        "cast_name": "ももこ",
-        "title": "20代前半セラピ　ソファからの展開最速　初回GHR",
-        "url": "https://wakust.com/hagetaka1234/1603688/",
-    },
-    {
         "shop_name": "セラトピア",
         "cast_name": "ゆうか",
         "title": "ドエロボディの20歳セラピ　エロ好きで攻めもすごい　初回GHR",
@@ -61,12 +49,6 @@ POST_ITEMS = [
     },
     {
         "shop_name": "ギャラクシー",
-        "cast_name": "ゆり",
-        "title": "ハーフ美人F乳セラピ　スタイル抜群の神乳　初回NS",
-        "url": "https://wakust.com/hagetaka1234/1611837/",
-    },
-    {
-        "shop_name": "ギャラクシー",
         "cast_name": "れい",
         "title": "20代後半褐色ギャル　どMでさらにNNOK！　初回NN",
         "url": "https://wakust.com/hagetaka1234/1492639/",
@@ -76,12 +58,6 @@ POST_ITEMS = [
         "cast_name": "くるみ",
         "title": "21歳エロBODY　仰向けからは超密着からのいちゃいちゃ　初回NS",
         "url": "https://wakust.com/hagetaka1234/1694665/",
-    },
-    {
-        "shop_name": "ベビードール",
-        "cast_name": "さら",
-        "title": "21歳激美女　体にオイルを自ら塗るどM女神　初回GHR",
-        "url": "https://wakust.com/hagetaka1234/1692098/",
     },
     {
         "shop_name": "C-MOON",
@@ -101,8 +77,6 @@ POST_ITEMS = [
         "title": "マイナー店の激美女セラピ　開始１０分でエロスタートの痴女　初回NS",
         "url": "https://wakust.com/hagetaka1234/1691566/",
     },
-
-    # 追加
     {
         "shop_name": "セラトピア",
         "cast_name": "🔰ひめか新人🔰",

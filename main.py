@@ -129,18 +129,6 @@ TARGETS = [
         "fallback_name": "",
     },
     {
-        "shop": "フェリシア",
-        "url": "https://felicia-garden.com/profile.php?sid=210",
-        "parser": felicia,
-        "fallback_name": "",
-    },
-    {
-        "shop": "ギャラクシー",
-        "url": "https://galaxy-nagoya.com/cast/%E3%82%86%E3%82%8A",
-        "parser": galaxy,
-        "fallback_name": "",
-    },
-    {
         "shop": "ギャラクシー",
         "url": "https://galaxy-nagoya.com/cast/%E3%82%8C%E3%81%84",
         "parser": galaxy,
@@ -150,12 +138,6 @@ TARGETS = [
         "shop": "ギャラクシー",
         "url": "https://galaxy-nagoya.com/cast/%E3%81%8F%E3%82%8B%E3%81%BF",
         "parser": galaxy,
-        "fallback_name": "",
-    },
-    {
-        "shop": "ベビードール",
-        "url": "https://babydoll-nagoya.com/profile/?id=18",
-        "parser": babydoll,
         "fallback_name": "",
     },
     {
@@ -174,12 +156,6 @@ TARGETS = [
         "shop": "トリハダスパ",
         "url": "https://torihada-spa.men-es.jp/profile.html?sid=305",
         "parser": torihada,
-        "fallback_name": "",
-    },
-    {
-        "shop": "ハニエル",
-        "url": "https://haniel-nagoya.net/profile.html?5082",
-        "parser": haniel,
         "fallback_name": "",
     },
     {
