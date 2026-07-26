@@ -95,6 +95,12 @@ POST_ITEMS = [
         "title": "２０代前半セラピ　　自分でいじりはじめるエロがリスト 初回GHR",
         "url": "https://wakust.com/hagetaka1234/1715859/",
     },
+    {
+        "shop_name": "ゴールドワゴン",
+        "cast_name": "まな【D】",
+        "title": "20代前半新人未経験美人セラピ　施術なしでいきなりスタート　名器持ち美女と初回NS",
+        "url": "https://wakust.com/hagetaka1234/1759300/",
+    },
 ]
 
 

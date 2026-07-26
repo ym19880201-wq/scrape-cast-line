@@ -21,6 +21,7 @@ from sites import cmoon
 from sites import exe
 from sites import felicia
 from sites import galaxy
+from sites import gold_wagon
 from sites import golden_rose
 from sites import haniel
 from sites import hosifuluspa
@@ -192,6 +193,12 @@ TARGETS = [
         "shop": "センチュリー",
         "url": "https://century-nagoya.com/profile.php?sid=987",
         "parser": century,
+        "fallback_name": "",
+    },
+    {
+        "shop": "ゴールドワゴン",
+        "url": "https://gold-wagon.com/profile.php?sid=23462#contents",
+        "parser": gold_wagon,
         "fallback_name": "",
     },
 ]
