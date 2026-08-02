@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from common import send_line_message
 from build_blog_html import build_blog_html
 from build_blog_schedule import build_blog_schedule
+from wakust_post import post_to_wakust
 from sites import babydoll
 from sites import carina
 from sites import century
@@ -38,6 +39,13 @@ LINE_SAFE_LIMIT = 4300
 GMAIL_ADDRESS = "ym19880201@gmail.com"
 GMAIL_SMTP_HOST = "smtp.gmail.com"
 GMAIL_SMTP_PORT = 465
+
+WAKUST_POST_ENABLED = True
+WAKUST_PUBLISH = True
+WAKUST_CATEGORY_VALUE = "24623"
+WAKUST_TAGS = "名古屋市,メンズエステ"
+
+IS_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
 
 HEADERS = {
     "User-Agent": (
@@ -536,6 +544,7 @@ def build_blog_message(results: List[Dict[str, Any]]) -> str:
 def main() -> None:
     print("[MAIN] 開始")
     print(f"[MAIN] targets={len(TARGETS)}")
+    print(f"[MAIN] GitHub Actions: {IS_GITHUB_ACTIONS}")
 
     results: List[Dict[str, Any]] = []
 
@@ -595,6 +604,48 @@ def main() -> None:
         print("[MAIN] 2通目Gmail送信成功")
     except Exception as e:
         print(f"[MAIN] 2通目Gmail送信エラー: {e}")
+        raise
+
+    print("")
+    print("=" * 80)
+
+    if IS_GITHUB_ACTIONS:
+        print("[MAIN] GitHub Actions実行のためワクスト投稿をスキップします")
+        print("[MAIN] LINE・Gmailまでで処理を終了します")
+        return
+
+    if not WAKUST_POST_ENABLED:
+        print("[MAIN] ワクスト投稿は無効です")
+        print("[MAIN] LINE・Gmailまでで処理を終了します")
+        return
+
+    print(
+        "[MAIN] 3つ目ワクスト"
+        f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿開始"
+    )
+
+    try:
+        wakust_result = post_to_wakust(
+            title=blog_subject,
+            body_html=blog_message,
+            publish=WAKUST_PUBLISH,
+            tags=WAKUST_TAGS,
+            category_value=WAKUST_CATEGORY_VALUE,
+        )
+
+        print(
+            "[MAIN] 3つ目ワクスト"
+            f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿成功"
+        )
+        print(f"[MAIN] 投稿タイトル: {wakust_result['title']}")
+        print(f"[MAIN] 公開設定: {wakust_result['status']}")
+        print(f"[MAIN] 投稿後URL: {wakust_result['url']}")
+
+    except Exception as e:
+        print(
+            "[MAIN] 3つ目ワクスト"
+            f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿エラー: {e}"
+        )
         raise
 
 
