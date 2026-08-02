@@ -25,6 +25,7 @@ from sites import gold_wagon
 from sites import golden_rose
 from sites import haniel
 from sites import hosifuluspa
+from sites import jelly
 from sites import kuraimax
 from sites import resexy
 from sites import theratopia
@@ -201,6 +202,12 @@ TARGETS = [
         "parser": gold_wagon,
         "fallback_name": "",
     },
+    {
+        "shop": "Jelly～ジェリー",
+        "url": "https://jelly.nagoya/staff/details/ee1a0489-9666-4fd6-b034-3c3ae4c453d9",
+        "parser": jelly,
+        "fallback_name": "",
+    },
 ]
 
 
@@ -320,6 +327,7 @@ def normalize_parsed_result(
 
         if len(items) == 1:
             only = items[0]
+
             if isinstance(only, dict):
                 shifts_value = only.get("shifts", None)
 
@@ -332,6 +340,7 @@ def normalize_parsed_result(
                     "name": normalize_text(str(only.get("name", "") or fallback_name)),
                     "shifts": ensure_shifts_list(shifts_value),
                 }
+
             return {
                 "shop": normalize_text(shop),
                 "url": normalize_text(url),
@@ -411,11 +420,13 @@ def trim_message(text: str, limit: int) -> str:
 
 def get_gmail_app_password() -> str:
     password = os.getenv("GMAIL_APP_PASSWORD", "").strip()
+
     if not password:
         raise RuntimeError(
             "GMAIL_APP_PASSWORD が設定されていません。"
             " 実行前に環境変数 GMAIL_APP_PASSWORD に Gmail のアプリパスワードを設定してください。"
         )
+
     return password
 
 
@@ -485,14 +496,19 @@ def build_blog_message(results: List[Dict[str, Any]]) -> str:
         shifts = ensure_shifts_list(item.get("shifts", []))
 
         valid_shifts = []
+
         for shift in shifts:
             shift_text = normalize_text(shift)
+
             if not shift_text:
                 continue
+
             if shift_text == "出勤予定なし":
                 continue
+
             if shift_text.startswith("取得エラー:"):
                 continue
+
             valid_shifts.append(shift_text)
 
         if not shop or not name or not valid_shifts:

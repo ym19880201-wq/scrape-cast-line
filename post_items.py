@@ -101,6 +101,12 @@ POST_ITEMS = [
         "title": "20代前半新人未経験美人セラピ　施術なしでいきなりスタート　名器持ち美女と初回NS",
         "url": "https://wakust.com/hagetaka1234/1759300/",
     },
+    {
+        "shop_name": "Jelly～ジェリー",
+        "cast_name": "しのん",
+        "title": "２０代後半セラピスト　心配になるくらい良い子　施術ほとんどなしの初回GHR",
+        "url": "https://wakust.com/hagetaka1234/1794582/",
+    },
 ]
 
 
