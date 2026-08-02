@@ -13,6 +13,10 @@ jobs:
       LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
       LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      WAKUST_EMAIL: ${{ secrets.WAKUST_EMAIL }}
+      WAKUST_PASSWORD: ${{ secrets.WAKUST_PASSWORD }}
+      WAKUST_POST_ENABLED: ${{ github.event_name == 'schedule' }}
+      WAKUST_PUBLISH: "true"
 
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +25,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install requests beautifulsoup4
+      - run: pip install requests beautifulsoup4 selenium
 
       - run: python scrape_cast.py

@@ -40,12 +40,14 @@ GMAIL_ADDRESS = "ym19880201@gmail.com"
 GMAIL_SMTP_HOST = "smtp.gmail.com"
 GMAIL_SMTP_PORT = 465
 
-WAKUST_POST_ENABLED = True
-WAKUST_PUBLISH = True
+WAKUST_POST_ENABLED = (
+    os.getenv("WAKUST_POST_ENABLED", "").strip().lower() == "true"
+)
+WAKUST_PUBLISH = (
+    os.getenv("WAKUST_PUBLISH", "true").strip().lower() == "true"
+)
 WAKUST_CATEGORY_VALUE = "24623"
 WAKUST_TAGS = "名古屋市,メンズエステ"
-
-IS_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
 
 HEADERS = {
     "User-Agent": (
@@ -237,11 +239,19 @@ def ensure_shifts_list(value: Any) -> List[str]:
         return []
 
     if isinstance(value, list):
-        result = [normalize_text(str(x)) for x in value if normalize_text(str(x))]
+        result = [
+            normalize_text(str(x))
+            for x in value
+            if normalize_text(str(x))
+        ]
         return dedupe_keep_order(result)
 
     if isinstance(value, tuple):
-        result = [normalize_text(str(x)) for x in value if normalize_text(str(x))]
+        result = [
+            normalize_text(str(x))
+            for x in value
+            if normalize_text(str(x))
+        ]
         return dedupe_keep_order(result)
 
     text = normalize_text(str(value))
@@ -249,11 +259,19 @@ def ensure_shifts_list(value: Any) -> List[str]:
         return []
 
     if "、" in text:
-        result = [normalize_text(x) for x in text.split("、") if normalize_text(x)]
+        result = [
+            normalize_text(x)
+            for x in text.split("、")
+            if normalize_text(x)
+        ]
         return dedupe_keep_order(result)
 
     if "," in text:
-        result = [normalize_text(x) for x in text.split(",") if normalize_text(x)]
+        result = [
+            normalize_text(x)
+            for x in text.split(",")
+            if normalize_text(x)
+        ]
         return dedupe_keep_order(result)
 
     return [text]
@@ -292,7 +310,12 @@ def parse_new_site(
     lines: List[str],
     fallback_name: str,
 ) -> Any:
-    return parser.parse(url, soup, lines, fallback_name=fallback_name)
+    return parser.parse(
+        url,
+        soup,
+        lines,
+        fallback_name=fallback_name,
+    )
 
 
 def normalize_parsed_result(
@@ -308,9 +331,15 @@ def normalize_parsed_result(
             shifts_value = parsed.get("schedule", [])
 
         return {
-            "shop": normalize_text(str(parsed.get("shop", "") or shop)),
-            "url": normalize_text(str(parsed.get("url", "") or url)),
-            "name": normalize_text(str(parsed.get("name", "") or fallback_name)),
+            "shop": normalize_text(
+                str(parsed.get("shop", "") or shop)
+            ),
+            "url": normalize_text(
+                str(parsed.get("url", "") or url)
+            ),
+            "name": normalize_text(
+                str(parsed.get("name", "") or fallback_name)
+            ),
             "shifts": ensure_shifts_list(shifts_value),
         }
 
@@ -321,7 +350,9 @@ def normalize_parsed_result(
             return {
                 "shop": normalize_text(str(items[0] or shop)),
                 "url": normalize_text(url),
-                "name": normalize_text(str(items[1] or fallback_name)),
+                "name": normalize_text(
+                    str(items[1] or fallback_name)
+                ),
                 "shifts": ensure_shifts_list(items[2]),
             }
 
@@ -329,7 +360,9 @@ def normalize_parsed_result(
             return {
                 "shop": normalize_text(shop),
                 "url": normalize_text(url),
-                "name": normalize_text(str(items[0] or fallback_name)),
+                "name": normalize_text(
+                    str(items[0] or fallback_name)
+                ),
                 "shifts": ensure_shifts_list(items[1]),
             }
 
@@ -343,16 +376,29 @@ def normalize_parsed_result(
                     shifts_value = only.get("schedule", [])
 
                 return {
-                    "shop": normalize_text(str(only.get("shop", "") or shop)),
-                    "url": normalize_text(str(only.get("url", "") or url)),
-                    "name": normalize_text(str(only.get("name", "") or fallback_name)),
-                    "shifts": ensure_shifts_list(shifts_value),
+                    "shop": normalize_text(
+                        str(only.get("shop", "") or shop)
+                    ),
+                    "url": normalize_text(
+                        str(only.get("url", "") or url)
+                    ),
+                    "name": normalize_text(
+                        str(
+                            only.get("name", "")
+                            or fallback_name
+                        )
+                    ),
+                    "shifts": ensure_shifts_list(
+                        shifts_value
+                    ),
                 }
 
             return {
                 "shop": normalize_text(shop),
                 "url": normalize_text(url),
-                "name": normalize_text(str(only or fallback_name)),
+                "name": normalize_text(
+                    str(only or fallback_name)
+                ),
                 "shifts": [],
             }
 
@@ -368,11 +414,19 @@ def normalize_parsed_result(
 
 def build_weekly_blog_title_parts() -> Dict[str, str]:
     today_jst = datetime.now(JST).date()
-    monday = today_jst - timedelta(days=today_jst.weekday())
+    monday = today_jst - timedelta(
+        days=today_jst.weekday()
+    )
     sunday = monday + timedelta(days=6)
 
-    start_text = f"{monday.month}月{monday.day}日（{WEEKDAY_JA[monday.weekday()]}）"
-    end_text = f"{sunday.month}月{sunday.day}日（{WEEKDAY_JA[sunday.weekday()]}）"
+    start_text = (
+        f"{monday.month}月{monday.day}日"
+        f"（{WEEKDAY_JA[monday.weekday()]}）"
+    )
+    end_text = (
+        f"{sunday.month}月{sunday.day}日"
+        f"（{WEEKDAY_JA[sunday.weekday()]}）"
+    )
 
     return {
         "date_range": f"{start_text}～{end_text}",
@@ -382,7 +436,10 @@ def build_weekly_blog_title_parts() -> Dict[str, str]:
 
 def build_weekly_blog_title() -> str:
     title_parts = build_weekly_blog_title_parts()
-    return f'{title_parts["date_range"]} {title_parts["label"]}'
+    return (
+        f'{title_parts["date_range"]} '
+        f'{title_parts["label"]}'
+    )
 
 
 def build_weekly_blog_subject() -> str:
@@ -399,8 +456,9 @@ def build_blog_title_html() -> str:
 
     return (
         '<div style="text-align:center; font-weight:bold; '
-        'line-height:1.45; margin:0 0 18px 0; padding:12px 10px; '
-        'display:block; width:100%; max-width:100%; box-sizing:border-box; '
+        'line-height:1.45; margin:0 0 18px 0; '
+        'padding:12px 10px; display:block; width:100%; '
+        'max-width:100%; box-sizing:border-box; '
         f'background:{pattern["background"]}; '
         f'border-top:4px solid {pattern["border"]}; '
         f'border-bottom:4px solid {pattern["border"]}; '
@@ -409,8 +467,13 @@ def build_blog_title_html() -> str:
         f'box-shadow:{pattern["inset"]}; '
         f'text-shadow:{pattern["shadow"]};">'
         '<div style="display:inline-block; text-align:center;">'
-        f'<div style="font-size:18px; line-height:1.45;">{title_parts["date_range"]}</div>'
-        f'<div style="font-size:24px; line-height:1.35; margin-top:2px;">{title_parts["label"]}</div>'
+        '<div style="font-size:18px; line-height:1.45;">'
+        f'{title_parts["date_range"]}'
+        "</div>"
+        '<div style="font-size:24px; line-height:1.35; '
+        'margin-top:2px;">'
+        f'{title_parts["label"]}'
+        "</div>"
         "</div>"
         "</div>"
     )
@@ -423,41 +486,69 @@ def build_blog_spacer_html() -> str:
 def trim_message(text: str, limit: int) -> str:
     if len(text) <= limit:
         return text
+
     return text[: limit - 3] + "..."
 
 
 def get_gmail_app_password() -> str:
-    password = os.getenv("GMAIL_APP_PASSWORD", "").strip()
+    password = os.getenv(
+        "GMAIL_APP_PASSWORD",
+        "",
+    ).strip()
 
     if not password:
         raise RuntimeError(
             "GMAIL_APP_PASSWORD が設定されていません。"
-            " 実行前に環境変数 GMAIL_APP_PASSWORD に Gmail のアプリパスワードを設定してください。"
+            " 実行前に環境変数 GMAIL_APP_PASSWORD に"
+            " Gmail のアプリパスワードを設定してください。"
         )
 
     return password
 
 
-def send_gmail_code(subject: str, body_text: str) -> None:
+def send_gmail_code(
+    subject: str,
+    body_text: str,
+) -> None:
     app_password = get_gmail_app_password()
 
-    message = MIMEText(body_text, "plain", "utf-8")
+    message = MIMEText(
+        body_text,
+        "plain",
+        "utf-8",
+    )
     message["Subject"] = subject
     message["From"] = GMAIL_ADDRESS
     message["To"] = GMAIL_ADDRESS
 
     context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL(GMAIL_SMTP_HOST, GMAIL_SMTP_PORT, context=context) as server:
-        server.login(GMAIL_ADDRESS, app_password)
-        server.sendmail(GMAIL_ADDRESS, [GMAIL_ADDRESS], message.as_string())
+    with smtplib.SMTP_SSL(
+        GMAIL_SMTP_HOST,
+        GMAIL_SMTP_PORT,
+        context=context,
+    ) as server:
+        server.login(
+            GMAIL_ADDRESS,
+            app_password,
+        )
+        server.sendmail(
+            GMAIL_ADDRESS,
+            [GMAIL_ADDRESS],
+            message.as_string(),
+        )
 
 
-def scrape_target(target: Dict[str, Any]) -> Dict[str, Any]:
+def scrape_target(
+    target: Dict[str, Any],
+) -> Dict[str, Any]:
     shop = target["shop"]
     url = target["url"]
     parser = target["parser"]
-    fallback_name = target.get("fallback_name", "")
+    fallback_name = target.get(
+        "fallback_name",
+        "",
+    )
 
     print("")
     print("#" * 80)
@@ -468,23 +559,51 @@ def scrape_target(target: Dict[str, Any]) -> Dict[str, Any]:
     if parser in [resexy, carina]:
         soup = fetch_soup(url)
         lines = build_lines_from_soup(soup)
-        parsed = parse_new_site(parser, url, soup, lines, fallback_name)
+
+        parsed = parse_new_site(
+            parser,
+            url,
+            soup,
+            lines,
+            fallback_name,
+        )
     else:
-        parsed = parse_existing_site(parser, url)
+        parsed = parse_existing_site(
+            parser,
+            url,
+        )
 
-    return normalize_parsed_result(parsed, shop, url, fallback_name)
+    return normalize_parsed_result(
+        parsed,
+        shop,
+        url,
+        fallback_name,
+    )
 
 
-def build_message(results: List[Dict[str, Any]]) -> str:
+def build_message(
+    results: List[Dict[str, Any]],
+) -> str:
     lines: List[str] = []
     lines.append("出勤確認結果")
     lines.append("")
 
     for item in results:
-        shop = normalize_text(str(item.get("shop", "")))
-        name = normalize_text(str(item.get("name", ""))) or "取得失敗"
-        shifts = ensure_shifts_list(item.get("shifts", []))
-        shifts_text = "、".join(shifts) if shifts else "出勤予定なし"
+        shop = normalize_text(
+            str(item.get("shop", ""))
+        )
+        name = normalize_text(
+            str(item.get("name", ""))
+        ) or "取得失敗"
+
+        shifts = ensure_shifts_list(
+            item.get("shifts", [])
+        )
+        shifts_text = (
+            "、".join(shifts)
+            if shifts
+            else "出勤予定なし"
+        )
 
         lines.append(f"店名：{shop}")
         lines.append(f"名前：{name}")
@@ -492,16 +611,28 @@ def build_message(results: List[Dict[str, Any]]) -> str:
         lines.append("")
 
     message = "\n".join(lines).strip()
-    return trim_message(message, LINE_SAFE_LIMIT)
+
+    return trim_message(
+        message,
+        LINE_SAFE_LIMIT,
+    )
 
 
-def build_blog_message(results: List[Dict[str, Any]]) -> str:
+def build_blog_message(
+    results: List[Dict[str, Any]],
+) -> str:
     raw_items: List[Dict[str, Any]] = []
 
     for item in results:
-        shop = normalize_text(str(item.get("shop", "")))
-        name = normalize_text(str(item.get("name", "")))
-        shifts = ensure_shifts_list(item.get("shifts", []))
+        shop = normalize_text(
+            str(item.get("shop", ""))
+        )
+        name = normalize_text(
+            str(item.get("name", ""))
+        )
+        shifts = ensure_shifts_list(
+            item.get("shifts", [])
+        )
 
         valid_shifts = []
 
@@ -530,34 +661,63 @@ def build_blog_message(results: List[Dict[str, Any]]) -> str:
             }
         )
 
-    schedule_items = build_blog_schedule(raw_items)
+    schedule_items = build_blog_schedule(
+        raw_items
+    )
     title_html = build_blog_title_html()
     spacer_html = build_blog_spacer_html()
 
     if not schedule_items:
-        return title_html + "\n" + spacer_html + "\n" + "投稿対象データがありません。"
+        return (
+            title_html
+            + "\n"
+            + spacer_html
+            + "\n"
+            + "投稿対象データがありません。"
+        )
 
     html = build_blog_html(schedule_items)
-    return title_html + "\n" + spacer_html + "\n" + html
+
+    return (
+        title_html
+        + "\n"
+        + spacer_html
+        + "\n"
+        + html
+    )
 
 
 def main() -> None:
     print("[MAIN] 開始")
     print(f"[MAIN] targets={len(TARGETS)}")
-    print(f"[MAIN] GitHub Actions: {IS_GITHUB_ACTIONS}")
+    print(
+        "[MAIN] ワクスト投稿設定: "
+        f"{WAKUST_POST_ENABLED}"
+    )
 
     results: List[Dict[str, Any]] = []
 
-    for index, target in enumerate(TARGETS, start=1):
+    for index, target in enumerate(
+        TARGETS,
+        start=1,
+    ):
         print("")
-        print(f"[MAIN] {index}/{len(TARGETS)} 処理中")
+        print(
+            f"[MAIN] {index}/{len(TARGETS)} 処理中"
+        )
 
         try:
             result = scrape_target(target)
 
             print(f"[OK] {result['shop']}")
-            print(f" -> 名前: {result['name'] if result['name'] else '取得失敗'}")
-            print(f" -> 出勤: {', '.join(result['shifts']) if result['shifts'] else '出勤予定なし'}")
+            print(
+                " -> 名前: "
+                f"{result['name'] if result['name'] else '取得失敗'}"
+            )
+            print(
+                " -> 出勤: "
+                f"{', '.join(result['shifts']) if result['shifts'] else '出勤予定なし'}"
+            )
 
             results.append(result)
 
@@ -570,7 +730,9 @@ def main() -> None:
                     "shop": target["shop"],
                     "url": target["url"],
                     "name": "取得失敗",
-                    "shifts": [f"取得エラー: {e}"],
+                    "shifts": [
+                        f"取得エラー: {e}"
+                    ],
                 }
             )
 
@@ -579,49 +741,62 @@ def main() -> None:
     print("")
     print("=" * 80)
     print("[MAIN] 1通目メッセージ作成")
+
     message = build_message(results)
+
     print(message)
     print("=" * 80)
 
     try:
         send_line_message(message)
         print("[MAIN] 1通目LINE送信成功")
+
     except Exception as e:
-        print(f"[MAIN] 1通目LINE送信エラー: {e}")
+        print(
+            f"[MAIN] 1通目LINE送信エラー: {e}"
+        )
         raise
 
     print("")
     print("=" * 80)
     print("[MAIN] 2通目Gmailコード作成")
+
     blog_message = build_blog_message(results)
     blog_subject = build_weekly_blog_subject()
+
     print(blog_subject)
     print(blog_message)
     print("=" * 80)
 
     try:
-        send_gmail_code(blog_subject, blog_message)
+        send_gmail_code(
+            blog_subject,
+            blog_message,
+        )
         print("[MAIN] 2通目Gmail送信成功")
+
     except Exception as e:
-        print(f"[MAIN] 2通目Gmail送信エラー: {e}")
+        print(
+            f"[MAIN] 2通目Gmail送信エラー: {e}"
+        )
         raise
 
     print("")
     print("=" * 80)
 
-    if IS_GITHUB_ACTIONS:
-        print("[MAIN] GitHub Actions実行のためワクスト投稿をスキップします")
-        print("[MAIN] LINE・Gmailまでで処理を終了します")
-        return
-
     if not WAKUST_POST_ENABLED:
-        print("[MAIN] ワクスト投稿は無効です")
-        print("[MAIN] LINE・Gmailまでで処理を終了します")
+        print(
+            "[MAIN] ワクスト投稿は無効です"
+        )
+        print(
+            "[MAIN] LINE・Gmailまでで処理を終了します"
+        )
         return
 
     print(
         "[MAIN] 3つ目ワクスト"
-        f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿開始"
+        f"{'公開' if WAKUST_PUBLISH else '非公開'}"
+        "投稿開始"
     )
 
     try:
@@ -635,16 +810,27 @@ def main() -> None:
 
         print(
             "[MAIN] 3つ目ワクスト"
-            f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿成功"
+            f"{'公開' if WAKUST_PUBLISH else '非公開'}"
+            "投稿成功"
         )
-        print(f"[MAIN] 投稿タイトル: {wakust_result['title']}")
-        print(f"[MAIN] 公開設定: {wakust_result['status']}")
-        print(f"[MAIN] 投稿後URL: {wakust_result['url']}")
+        print(
+            "[MAIN] 投稿タイトル: "
+            f"{wakust_result['title']}"
+        )
+        print(
+            "[MAIN] 公開設定: "
+            f"{wakust_result['status']}"
+        )
+        print(
+            "[MAIN] 投稿後URL: "
+            f"{wakust_result['url']}"
+        )
 
     except Exception as e:
         print(
             "[MAIN] 3つ目ワクスト"
-            f"{'公開' if WAKUST_PUBLISH else '非公開'}投稿エラー: {e}"
+            f"{'公開' if WAKUST_PUBLISH else '非公開'}"
+            f"投稿エラー: {e}"
         )
         raise
 
