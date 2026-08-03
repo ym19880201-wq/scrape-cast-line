@@ -1,6 +1,17 @@
+import os
 import re
 
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+
 from common import clean_name, fetch
+
+
+IS_GITHUB_ACTIONS = (
+    os.getenv("GITHUB_ACTIONS", "").strip().lower() == "true"
+)
 
 
 def _normalize_text(text):
@@ -13,6 +24,79 @@ def _normalize_text(text):
     text = re.sub(r"\s+", " ", text)
 
     return text.strip()
+
+
+def _fetch_with_selenium(url):
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-popup-blocking")
+    options.add_argument("--disable-extensions")
+    options.add_argument(
+        "--user-agent="
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    )
+
+    driver = webdriver.Chrome(options=options)
+
+    try:
+        print("[JELLY] GitHub Actions用Chrome取得開始")
+
+        driver.get(url)
+
+        WebDriverWait(driver, 30).until(
+            lambda current_driver: current_driver.execute_script(
+                "return document.readyState"
+            )
+            == "complete"
+        )
+
+        title = driver.title or ""
+        html = driver.page_source
+
+        soup = BeautifulSoup(
+            html,
+            "html.parser",
+        )
+
+        text = soup.get_text(
+            "\n",
+            strip=True,
+        )
+
+        lines = []
+
+        for raw_line in text.splitlines():
+            line = _normalize_text(raw_line)
+
+            if line:
+                lines.append(line)
+
+        if not lines:
+            raise RuntimeError(
+                "Jellyのページ本文を取得できませんでした。"
+            )
+
+        print("[JELLY] GitHub Actions用Chrome取得成功")
+
+        return title, lines
+
+    finally:
+        driver.quit()
+        print("[JELLY] GitHub Actions用Chrome終了")
+
+
+def _fetch_page(url):
+    if IS_GITHUB_ACTIONS:
+        return _fetch_with_selenium(url)
+
+    return fetch(url)
 
 
 def _extract_name(title, lines):
@@ -116,7 +200,7 @@ def _extract_shifts(lines):
 
 
 def parse(url):
-    title, lines = fetch(url)
+    title, lines = _fetch_page(url)
 
     name = _extract_name(title, lines)
     shifts = _extract_shifts(lines)
