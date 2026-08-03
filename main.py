@@ -35,6 +35,8 @@ from sites import white
 
 
 TIMEOUT = 20
+RETRY_MAX_ATTEMPTS = 3
+RETRY_WAIT_SECONDS = 5
 LINE_SAFE_LIMIT = 4300
 GMAIL_ADDRESS = "ym19880201@gmail.com"
 GMAIL_SMTP_HOST = "smtp.gmail.com"
@@ -224,9 +226,11 @@ TARGETS = [
 def normalize_text(text: str) -> str:
     if not text:
         return ""
+
     text = text.replace("\u3000", " ")
     text = text.replace("\xa0", " ")
     text = re.sub(r"\s+", " ", text)
+
     return text.strip()
 
 
@@ -255,6 +259,7 @@ def ensure_shifts_list(value: Any) -> List[str]:
         return dedupe_keep_order(result)
 
     text = normalize_text(str(value))
+
     if not text:
         return []
 
@@ -283,6 +288,7 @@ def build_lines_from_soup(soup: BeautifulSoup) -> List[str]:
 
     for raw in text.splitlines():
         line = normalize_text(raw)
+
         if line:
             lines.append(line)
 
@@ -290,16 +296,26 @@ def build_lines_from_soup(soup: BeautifulSoup) -> List[str]:
 
 
 def fetch_soup(url: str) -> BeautifulSoup:
-    response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+    response = requests.get(
+        url,
+        headers=HEADERS,
+        timeout=TIMEOUT,
+    )
     response.raise_for_status()
 
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or "utf-8"
 
-    return BeautifulSoup(response.text, "html.parser")
+    return BeautifulSoup(
+        response.text,
+        "html.parser",
+    )
 
 
-def parse_existing_site(parser: Any, url: str) -> Any:
+def parse_existing_site(
+    parser: Any,
+    url: str,
+) -> Any:
     return parser.parse(url)
 
 
@@ -348,12 +364,16 @@ def normalize_parsed_result(
 
         if len(items) >= 3:
             return {
-                "shop": normalize_text(str(items[0] or shop)),
+                "shop": normalize_text(
+                    str(items[0] or shop)
+                ),
                 "url": normalize_text(url),
                 "name": normalize_text(
                     str(items[1] or fallback_name)
                 ),
-                "shifts": ensure_shifts_list(items[2]),
+                "shifts": ensure_shifts_list(
+                    items[2]
+                ),
             }
 
         if len(items) == 2:
@@ -363,24 +383,38 @@ def normalize_parsed_result(
                 "name": normalize_text(
                     str(items[0] or fallback_name)
                 ),
-                "shifts": ensure_shifts_list(items[1]),
+                "shifts": ensure_shifts_list(
+                    items[1]
+                ),
             }
 
         if len(items) == 1:
             only = items[0]
 
             if isinstance(only, dict):
-                shifts_value = only.get("shifts", None)
+                shifts_value = only.get(
+                    "shifts",
+                    None,
+                )
 
                 if shifts_value is None:
-                    shifts_value = only.get("schedule", [])
+                    shifts_value = only.get(
+                        "schedule",
+                        [],
+                    )
 
                 return {
                     "shop": normalize_text(
-                        str(only.get("shop", "") or shop)
+                        str(
+                            only.get("shop", "")
+                            or shop
+                        )
                     ),
                     "url": normalize_text(
-                        str(only.get("url", "") or url)
+                        str(
+                            only.get("url", "")
+                            or url
+                        )
                     ),
                     "name": normalize_text(
                         str(
@@ -436,6 +470,7 @@ def build_weekly_blog_title_parts() -> Dict[str, str]:
 
 def build_weekly_blog_title() -> str:
     title_parts = build_weekly_blog_title_parts()
+
     return (
         f'{title_parts["date_range"]} '
         f'{title_parts["label"]}'
@@ -483,7 +518,10 @@ def build_blog_spacer_html() -> str:
     return '<div style="height: 18px;"></div>'
 
 
-def trim_message(text: str, limit: int) -> str:
+def trim_message(
+    text: str,
+    limit: int,
+) -> str:
     if len(text) <= limit:
         return text
 
@@ -578,6 +616,43 @@ def scrape_target(
         shop,
         url,
         fallback_name,
+    )
+
+
+def scrape_target_with_retry(
+    target: Dict[str, Any],
+) -> Dict[str, Any]:
+    for attempt in range(
+        1,
+        RETRY_MAX_ATTEMPTS + 1,
+    ):
+        try:
+            return scrape_target(target)
+
+        except requests.exceptions.RequestException as error:
+            if attempt >= RETRY_MAX_ATTEMPTS:
+                print(
+                    "[RETRY] "
+                    f"{target['shop']} "
+                    f"{RETRY_MAX_ATTEMPTS}回取得しても失敗しました"
+                )
+                raise
+
+            print(
+                "[RETRY] "
+                f"{target['shop']} "
+                f"通信エラー: {error}"
+            )
+            print(
+                "[RETRY] "
+                f"{RETRY_WAIT_SECONDS}秒待って"
+                f"{attempt + 1}回目を実行します"
+            )
+
+            time.sleep(RETRY_WAIT_SECONDS)
+
+    raise RuntimeError(
+        f"{target['shop']} の再試行処理に失敗しました。"
     )
 
 
@@ -694,6 +769,10 @@ def main() -> None:
         "[MAIN] ワクスト投稿設定: "
         f"{WAKUST_POST_ENABLED}"
     )
+    print(
+        "[MAIN] 通信エラー時の最大取得回数: "
+        f"{RETRY_MAX_ATTEMPTS}"
+    )
 
     results: List[Dict[str, Any]] = []
 
@@ -707,7 +786,9 @@ def main() -> None:
         )
 
         try:
-            result = scrape_target(target)
+            result = scrape_target_with_retry(
+                target
+            )
 
             print(f"[OK] {result['shop']}")
             print(
