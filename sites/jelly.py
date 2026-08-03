@@ -84,6 +84,15 @@ def _fetch_with_selenium(url):
             )
 
         print("[JELLY] GitHub Actions用Chrome取得成功")
+        print(f"[JELLY] ページURL: {driver.current_url}")
+        print(f"[JELLY] ページタイトル: {title}")
+        print(f"[JELLY] 取得行数: {len(lines)}")
+        print("[JELLY] 取得本文ログ開始")
+
+        for index, line in enumerate(lines, start=1):
+            print(f"[JELLY][LINE {index:03d}] {line}")
+
+        print("[JELLY] 取得本文ログ終了")
 
         return title, lines
 
